@@ -29,6 +29,12 @@ RUN tar xf apache-tomcat-7.0.86.tar.gz -C /usr/local/tomcat --strip-components 1
 RUN ls /usr/local/tomcat
 
 ## Config
+
+### Java
+RUN echo "export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64" >> /etc/profile
+RUN echo "export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64" >> ~/.bashrc
+ENV JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+
 ### Basic User Auth
 RUN mv /usr/local/tomcat/conf/tomcat-users.xml /usr/local/tomcat/conf/tomcat-users.xml.default
 RUN echo '<?xml version="1.0" encoding="UTF-8"?>\n\
