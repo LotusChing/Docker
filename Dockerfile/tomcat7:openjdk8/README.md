@@ -25,7 +25,7 @@
 2. Jstatd远程接口 tcp:2010
 
 ## 其他
-Jps: https://www.systutorials.com/docs/linux/man/1-jps-java-1.8.0-openjdk-1.8.0.65-3.b17.fc22.x86_64/
-Jstat: https://www.systutorials.com/docs/linux/man/1-jps-java-1.8.0-openjdk-1.8.0.65-3.b17.fc22.x86_64/
-Jstatd: https://www.systutorials.com/docs/linux/man/1-jstatd-java-1.8.0-openjdk-1.8.0.65-3.b17.fc22.x86_64/
+* Jps: https://www.systutorials.com/docs/linux/man/1-jps-java-1.8.0-openjdk-1.8.0.65-3.b17.fc22.x86_64/
+* Jstat: https://www.systutorials.com/docs/linux/man/1-jps-java-1.8.0-openjdk-1.8.0.65-3.b17.fc22.x86_64/
+* Jstatd: https://www.systutorials.com/docs/linux/man/1-jstatd-java-1.8.0-openjdk-1.8.0.65-3.b17.fc22.x86_64/
 
