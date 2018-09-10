@@ -10,11 +10,11 @@ RUN apt-get -y install lrzsz curl wget
 
 # Locale
 RUN apt-get -y install locales
-RUN echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
-RUN echo "export LC_ALL=en_US.UTF-8" >> ~/.bashrc
-RUN echo "export LANG=en_US.UTF-8" >> ~/.bashrc
-ENV LANG en_US.UTF-8
-ENV LC_ALL en_US.UTF-8
+RUN echo "C.UTF-8 UTF-8" >> /etc/locale.gen
+RUN echo "export LC_ALL=C.UTF-8" >> ~/.bashrc
+RUN echo "export LANG=C.UTF-8" >> ~/.bashrc
+ENV LANG C.UTF-8
+ENV LC_ALL C.UTF-8
 
 # Timezone
 RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai  /etc/localtime
