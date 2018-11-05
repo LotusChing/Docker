@@ -1,6 +1,6 @@
 FROM ubuntu:14.04
 RUN mv /etc/apt/sources.list /etc/apt/sources.list.default
-ADD 163_sources.list /etc/apt/sources.list
+ADD aliyun.list /etc/apt/sources.list
 RUN apt-get update
 RUN apt-get -y install software-properties-common
 RUN add-apt-repository ppa:openjdk-r/ppa
@@ -21,20 +21,33 @@ RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai  /etc/localtime
 RUN echo "Asia/Chongqing" > /etc/timezone
 ENV TZ Asia/Shanghai
 
+## Initial JDK
+ENV JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64
+RUN echo "export JAVA_HOME=$JAVA_HOME" >> /etc/profile
+RUN echo "export JAVA_HOME=$JAVA_HOME" >> ~/.bashrc
+
+
+## Initial Jstat Remote Interface
+RUN echo 'grant codebase "file:$JAVA_HOME/lib/tools.jar" {\n\
+    permission java.security.AllPermission;\n\
+};' > /etc/jstatd.all.policy
+
+
+# Create Tomcat User
+RUN groupadd -g 999 tomcat && \
+    useradd -m -r -u 999 -g tomcat -m -d /usr/local/tomcat/ tomcat
+
+
+
 # Tomcat
 ## Install
-RUN wget http://mirrors.tuna.tsinghua.edu.cn/apache/tomcat/tomcat-7/v7.0.86/bin/apache-tomcat-7.0.86.tar.gz
-RUN mkdir /usr/local/tomcat
-RUN tar xf apache-tomcat-7.0.86.tar.gz -C /usr/local/tomcat --strip-components 1
-RUN ls /usr/local/tomcat
+RUN wget https://mirrors.tuna.tsinghua.edu.cn/apache/tomcat/tomcat-7/v7.0.91/bin/apache-tomcat-7.0.91.tar.gz -O /tmp/tomcat.tgz && \
+    tar xf /tmp/tomcat.tgz  -C /usr/local/tomcat --strip-components 1 && \
+    rm -f /tmp/tomcat.tgz && \
+    chown -R tomcat.tomcat /usr/local/tomcat/
+
 
 ## Config
-
-### Java
-RUN echo "export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64" >> /etc/profile
-RUN echo "export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64" >> ~/.bashrc
-ENV JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
-
 ### Basic User Auth
 RUN mv /usr/local/tomcat/conf/tomcat-users.xml /usr/local/tomcat/conf/tomcat-users.xml.default
 RUN echo '<?xml version="1.0" encoding="UTF-8"?>\n\
@@ -52,10 +65,6 @@ RUN echo '<?xml version="1.0" encoding="UTF-8"?>\n\
 RUN sed -r -i 's/port="8080"/port="8080" URIEncoding="UTF-8"/g' /usr/local/tomcat/conf/server.xml
 RUN sed -i '2iexport CATALINA_OPTS="$CATALINA_OPTS -Duser.timezone=Asia/Shanghai -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=1099 -Dcom.sun.management.jmxremote.local.only=false -Dcom.sun.management.jmxremote.authenticate=false"' /usr/local/tomcat/bin/catalina.sh
 
-### Jstat Remote Interface
-RUN echo 'grant codebase "file:/usr/lib/jvm/java-8-openjdk-amd64/lib/tools.jar" {\n\
-    permission java.security.AllPermission;\n\
-};' > /etc/jstatd.all.policy
 
 # Container Basic
 WORKDIR /usr/local/tomcat
