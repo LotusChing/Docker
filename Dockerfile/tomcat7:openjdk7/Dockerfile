@@ -58,7 +58,7 @@ RUN echo '<?xml version="1.0" encoding="UTF-8"?>\n\
   <role rolename="manager-status"/>\n\
   <role rolename="admin-gui"/>\n\
   <role rolename="admin-script"/>\n\
-  <user username="LotusChing" password="wecan-info" roles="manager-gui,manager-script,manager-jmx,manager-status,admin-gui,admin-script"/>\n\
+  <user username="USERNAME" password="PASSWORD" roles="manager-gui,manager-script,manager-jmx,manager-status,admin-gui,admin-script"/>\n\
 </tomcat-users>' > /usr/local/tomcat/conf/tomcat-users.xml
 
 ### Tomcat Basic

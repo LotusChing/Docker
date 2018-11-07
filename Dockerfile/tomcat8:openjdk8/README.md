@@ -10,17 +10,18 @@
 2. jstat -gc rmi:vmid@container_ip:2010</rminame>
 
 ## 软件
-1. OpenJDK 8
-2. apache-tomcat-7.0.86
+1. Ubuntu 14.04 基础镜像
+2. OpenJDK 8
+3. apache-tomcat-8.0.53
 
 ## 配置
 1. timezone时区配置
 2. locale语言环境配置
 2. OpeJDK基础配置
-3. Tomcat基础配置、用户配置
+3. Tomcat基础配置、用户配置、基础安全配置(详见配置)
 4. Jstatd授权配置
 
-## 服务
+## 服务暴露
 1. Tomcat服务 tcp:8080
 2. Jstatd远程接口 tcp:2010
 

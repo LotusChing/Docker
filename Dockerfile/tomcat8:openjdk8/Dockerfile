@@ -27,12 +27,6 @@ RUN echo "export JAVA_HOME=$JAVA_HOME" >> /etc/profile
 RUN echo "export JAVA_HOME=$JAVA_HOME" >> ~/.bashrc
 
 
-## Initial Jstat Remote Interface
-RUN echo 'grant codebase "file:$JAVA_HOME/lib/tools.jar" {\n\
-    permission java.security.AllPermission;\n\
-};' > /etc/jstatd.all.policy
-
-
 # Create Tomcat User
 RUN groupadd -g 999 tomcat && \
     useradd -m -r -u 999 -g tomcat -m -d /usr/local/tomcat/ tomcat
@@ -40,11 +34,18 @@ RUN groupadd -g 999 tomcat && \
 
 
 # Tomcat
+
 ## Install
 RUN wget https://mirrors.tuna.tsinghua.edu.cn/apache/tomcat/tomcat-8/v8.0.53/bin/apache-tomcat-8.0.53.tar.gz -O /tmp/tomcat.tgz && \
     tar xf /tmp/tomcat.tgz  -C /usr/local/tomcat --strip-components 1 && \
     rm -f /tmp/tomcat.tgz && \
     chown -R tomcat.tomcat /usr/local/tomcat/
+
+
+## Initial Jstat Remote Interface
+RUN echo 'grant codebase "file:/usr/lib/jvm/java-8-openjdk-amd64/lib/tools.jar" {\n\
+    permission java.security.AllPermission;\n\
+};' > /usr/local/tomcat/conf/jstatd.all.policy
 
 
 ## Config
@@ -58,12 +59,13 @@ RUN echo '<?xml version="1.0" encoding="UTF-8"?>\n\
   <role rolename="manager-status"/>\n\
   <role rolename="admin-gui"/>\n\
   <role rolename="admin-script"/>\n\
-  <user username="LotusChing" password="wecan-info" roles="manager-gui,manager-script,manager-jmx,manager-status,admin-gui,admin-script"/>\n\
+  <user username="USERNAME" password="PASSWORD" roles="manager-gui,manager-script,manager-jmx,manager-status,admin-gui,admin-script"/>\n\
 </tomcat-users>' > /usr/local/tomcat/conf/tomcat-users.xml
 
 ### Tomcat Basic
-RUN sed -r -i 's/port="8080"/port="8080" URIEncoding="UTF-8"/g' /usr/local/tomcat/conf/server.xml
 RUN sed -i '2iexport CATALINA_OPTS="$CATALINA_OPTS -Duser.timezone=Asia/Shanghai -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=1099 -Dcom.sun.management.jmxremote.local.only=false -Dcom.sun.management.jmxremote.authenticate=false"' /usr/local/tomcat/bin/catalina.sh
+ADD server.xml /usr/local/tomcat/conf/server.xml
+ADD context.xml /usr/local/tomcat/conf/context.xml
 
 
 # Container Basic
