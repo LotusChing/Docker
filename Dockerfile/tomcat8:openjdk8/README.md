@@ -5,9 +5,9 @@
 如果比较在意安全方便的考虑，可以修改entrypoint.sh中jstatd启动命令，修改为
 `nohup jstatd -J-Djava.security.policy=/etc/jstatd.all.policy -p 2010 -n rminame > /var/log/jstatd.log 2>&1 &`
 
-获取JVM状态数据，更多用法见**其他**下的链接，OpenJDK官网没有找到相关文档，
-1. jps rmi://container_ip:2010</rminame>
-2. jstat -gc rmi:vmid@container_ip:2010</rminame>
+获取JVM状态数据，更多用法见**其他**下的链接，OpenJDK官网没有找到相关文档。
+1. jps rmi://container_ip:2010</rminame>，通过jps获取java进程，即为jstat获取lvmid
+2. jstat -gc rmi:lvmid@container_ip:2010</rminame>，通过jstat连接远程jvm，获取GC统计数据
 
 ## 软件
 1. Ubuntu 14.04 基础镜像
@@ -25,8 +25,13 @@
 1. Tomcat服务 tcp:8080
 2. Jstatd远程接口 tcp:2010
 
+## 日志输出
+
+1. jstatd：/usr/local/tomcat/logs/jstatd.log
+2. tomcat：/usr/local/tomcat/logs/
+
 ## 其他
 * Jps: https://www.systutorials.com/docs/linux/man/1-jps-java-1.8.0-openjdk-1.8.0.65-3.b17.fc22.x86_64/
-* Jstat: https://www.systutorials.com/docs/linux/man/1-jps-java-1.8.0-openjdk-1.8.0.65-3.b17.fc22.x86_64/
+* Jstat: https://www.systutorials.com/docs/linux/man/1-jstat-java-1.8.0-openjdk-1.8.0.31-5.b13.fc21.x86_64/
 * Jstatd: https://www.systutorials.com/docs/linux/man/1-jstatd-java-1.8.0-openjdk-1.8.0.65-3.b17.fc22.x86_64/
 
