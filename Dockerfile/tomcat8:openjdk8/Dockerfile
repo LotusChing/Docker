@@ -2,7 +2,7 @@ FROM ubuntu:14.04
 RUN mv /etc/apt/sources.list /etc/apt/sources.list.default
 ADD 163_sources.list /etc/apt/sources.list
 RUN apt-get update
-RUN apt-get -y install software-properties-common
+RUN apt-get -y install software-properties-common apt-transport-https
 RUN add-apt-repository ppa:openjdk-r/ppa
 RUN apt-get update
 RUN apt-get -y install openjdk-8-jdk
